@@ -1,4 +1,4 @@
-package Big_Data_Learning.Java.Advanced.Reflaction;
+package Big_Data_Learning.Java.Advanced.Reflaction.src;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -10,9 +10,9 @@ public class ReflactDemo1 {
         ReflactDemo1 reflactDemo1 = new ReflactDemo1();
 
         try {
-            reflactDemo1.getClassInstance();
+            reflactDemo1.getClassInstance2();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("Can't access private part of a class");
         }
 
     }
@@ -77,11 +77,23 @@ public class ReflactDemo1 {
         Class<? extends Person> p1Class = p1.getClass();
 
         //方式三:调用Class的静态方法
-        Class<?> class3 = Class.forName("Big_Data_Learning.Java.Advanced.Reflaction.Person");
+        Class<?> class3 = Class.forName("Big_Data_Learning.Java.Advanced.Reflaction.src.Person");
 
         //方式四:调用类的加载器ClassLoader
         ClassLoader classLoader = ReflactDemo1.class.getClassLoader();
-        Class<?> class4 = classLoader.loadClass("Big_Data_Learning.Java.Advanced.Reflaction.Person");
+        Class<?> class4 = classLoader.loadClass("Big_Data_Learning.Java.Advanced.Reflaction.src.Person");
+
+    }
+    public void getClassInstance2() throws Exception{
+        Class<Person> p1 = Person.class;
+        Field age = p1.getField("age");
+        System.out.println(age);
+        Field name = p1.getDeclaredField("name");
+
+        System.out.println(name);
+
+        //如何获取类的私有方法
+
 
     }
 

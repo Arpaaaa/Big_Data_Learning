@@ -1,7 +1,6 @@
-package Connection;
+package Connection;//package Big_Data_Learning.Java.Advanced.JDBC.src.Connection;
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -153,7 +152,7 @@ public class ConnectionTest {
         Connection connection = DriverManager.getConnection(url,user,password);
         Statement stat = connection.createStatement();
         ResultSet resultSet = stat.executeQuery(
-                "SELECT salary FROM employees WHERE employee_id = 100"
+                "SELECT * FROM myemployees.employees;"
         );
         if (resultSet.next()){
             System.out.println(resultSet.getString(1));

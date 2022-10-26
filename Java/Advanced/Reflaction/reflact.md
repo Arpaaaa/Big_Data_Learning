@@ -40,6 +40,13 @@
 ```java
 Class clazz = Person.class ;
 ```
+### `java.lang.Class`方法
+`static Class forName(String name)` 返回一个名为name的Class对象
+`Constructor getConstructor(Class...parameterTypes)` 返回类的构造器
+
+### `java.reflect.Constructor`方法
+`Object newInstance(Object...params)` 返回类的一个实例
+
 
 2. 加载到内存中的运行时类会缓存一定的时间，在此时间之内可以通过不同的方式来获取此运行时类
 
