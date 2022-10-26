@@ -2,7 +2,6 @@
 
 # Connection 数据库连接
 
-
 # 使用PreparedStatement 实现CRUD操作
 在`java.sql`包中有3个接口定义了对数据库的调用的不同方式
 * statement: 用于执行**静态SQL语句**并返回所生成的结果

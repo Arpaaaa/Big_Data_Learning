@@ -124,7 +124,6 @@ public class ConnectionTest {
         //加载驱动
         Class.forName(driverClass);
 
-
         //获取连接
         Connection connection = DriverManager.getConnection(url, usr, password);
         System.out.println(connection);

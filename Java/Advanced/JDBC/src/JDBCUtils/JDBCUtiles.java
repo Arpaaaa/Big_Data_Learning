@@ -32,7 +32,6 @@ public class JDBCUtiles {
         //获取连接
         return DriverManager.getConnection(url, usr, password);
     }
-
     /**
      * 关闭资源方法
      * @param connection
