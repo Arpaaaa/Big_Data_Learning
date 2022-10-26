@@ -1,4 +1,4 @@
-package PRACTICE.HeiMaTest.StudentManagement;
+package Big_Data_Learning.Java.Projects.StudentManagement;
 
 public class Student {
     private String id;
@@ -15,7 +15,6 @@ public class Student {
         this.age = age;
         this.address = address;
     }
-
     /**
      * 获取
      * @return id

@@ -1,13 +1,23 @@
-package PRACTICE.HeiMaTest.StudentManagement;
+package Big_Data_Learning.Java.Projects.StudentManagement;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+
 public class App {
     public static ArrayList<User> userList = new ArrayList<>();
+    static {
+        //可以在类初始化时加载一些信息，并且只加载一次
+        userList.add(new User());
+    }
     public static void main(String[] args){
+        final String LOG_IN = "1";
+        final String REGISTER = "2";
+        final String FORGET_PASSWORD = "3";
+        final String EXIT = "4";
+        final String SHOW_USERLIST = "0";
+
         //用户登录界面
         loop:while (true) {
             System.out.println("-----Student Management System-----");
@@ -15,14 +25,14 @@ public class App {
             Scanner sc = new Scanner(System.in);
             String choose = sc.next();
             switch (choose){
-                case "1"-> login(userList);
-                case "2"-> regist(userList);
-                case "3"-> forgetPassword(userList);
-                case "4"-> {
+                case LOG_IN-> login(userList);
+                case REGISTER-> regist(userList);
+                case FORGET_PASSWORD-> forgetPassword(userList);
+                case EXIT-> {
                     System.out.println("Exit");
                     break loop;
                 }
-                case "0"->{
+                case SHOW_USERLIST->{
                     for (int i = 0; i < userList.size(); i++) {
                         System.out.println(userList.get(i));
                     }

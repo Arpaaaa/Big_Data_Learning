@@ -1,12 +1,10 @@
-package PRACTICE.HeiMaTest.StudentManagement;
+package Big_Data_Learning.Java.Projects.StudentManagement;
 
 public class User {
     private String username;
     private String password;
     private String personId;
     private String phoneNumber;
-
-
     public User() {
     }
 

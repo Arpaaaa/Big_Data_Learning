@@ -1,7 +1,8 @@
-package PRACTICE.HeiMaTest.StudentManagement;
+package Big_Data_Learning.Java.Projects.StudentManagement;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 
 public class StudentSystem {
     public static ArrayList<Student> studentList = new ArrayList<>();
@@ -9,6 +10,12 @@ public class StudentSystem {
         //创建学生集合
         //ArrayList<Student> studentList = new ArrayList<>();
         //标记：将while循环用loop标记
+        //final 关键字
+        final String ADD_STUDENT = "1";
+        final String DELETE_STUDENT = "2";
+        final String MODIFY_STUDENT = "3";
+        final String QUERY_STUDENT = "4";
+        final String EXIT_STUDENT = "5";
         loop: while (true) {
             //输出界面
             System.out.println("--------Student Management System--------");
@@ -22,11 +29,11 @@ public class StudentSystem {
             Scanner sc = new Scanner(System.in);
             String choose = sc.next();
             switch (choose){
-                case "1"->addStudent(studentList);
-                case "2"->delStudent(studentList);
-                case "3"->updateStudent(studentList);
-                case "4"->queryStudent(studentList);
-                case "5"->{
+                case ADD_STUDENT->addStudent(studentList);
+                case DELETE_STUDENT->delStudent(studentList);
+                case MODIFY_STUDENT->updateStudent(studentList);
+                case QUERY_STUDENT->queryStudent(studentList);
+                case EXIT_STUDENT->{
                     System.out.println(" Exit ");
                     break loop;
                     //System.exit(0); //停止虚拟机运行
