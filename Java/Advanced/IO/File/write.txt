@@ -1,0 +1,201 @@
+In this chapter, we’ll explain a process by which you can create a good configuration
+file for your MySQL server. It is a roundabout trip, with many points of interest and
+side trips to scenic overlooks. These are necessary, because determining the shortest
+path to a good configuration doesn’t start with studying configuration options and
+asking which ones you should set or how you should change them, nor does it start
+with examining server behavior and asking whether any configuration options can improve it. It’s best to begin with an understanding of MySQL’s internals and behavior.
+You can then use that knowledge as a guide for how MySQL should be configured.
+Finally, you can compare the desired configuration to the current configuration and
+correct any differences that are important and worthwhile.
+People often ask, “What’s the optimal configuration file for my server with 32 GB of
+RAM and 12 CPU cores?” Unfortunately, it’s not that simple. The server should be
+configured for the workload, data, and application requirements, not just the hardware.
+MySQL has scores of settings that you can change—but you shouldn’t. It’s usually
+better to configure the basic settings correctly (and there are only a few that really matter
+in most cases) and spend more time on schema optimization, indexes, and query design.
+After you’ve set MySQL’s basic configuration options correctly, the potential gains
+from further changes are usually small.
+On the other hand, the potential downside of fiddling with the configuration can be
+great. We’ve seen more than one “highly tuned” server that was crashing constantly,
+stalling, or performing slowly due to unwise settings. We’ll spend a bit of time on why
+that can happen and what not to do.
+So what should you do? Make sure the basics such as the InnoDB buffer pool and log
+file size are appropriate, set a few safety and sanity options if you wish to prevent bad
+behavior (but note that these usually won’t improve performance—they’ll only avoid
+problems), and then leave the rest of the settings alone. If you begin to experience a
+problem, diagnose it carefully with the techniques shown in Chapter 3. If the problem
+is caused by a part of the server whose behavior can be corrected with a configuration
+option, then you might need to change it.
+331Sometimes you might also need to set specific configuration options that can have a
+significant performance impact in special cases. However, these should not be part of
+a basic server configuration file. You should set them only when you find the specific
+performance problems they address. That’s why we don’t suggest that you approach
+configuration options by looking for bad things to improve. If something needs to be
+improved, it should show up in query response times. It’s best to start your search with
+queries and their response times, not with configuration options. This could save you
+a lot of time and prevent many problems.
+Another good way to save time and trouble is to use the defaults unless you know you
+shouldn’t. There is safety in numbers, and a lot of people are running with default
+settings. That makes them the most thoroughly tested settings. Unexpected bugs can
+arise when you change things needlessly.
+How MySQL’s Configuration Works
+We’ll begin by explaining MySQL’s configuration mechanisms, before covering what
+you should configure in MySQL. MySQL is generally pretty forgiving about its configuration, but following these suggestions might save you a lot of work and time.
+The first thing to know is where MySQL gets configuration information: from
+command-line arguments and settings in its configuration file. On Unix-like systems,
+the configuration file is typically located at /etc/my.cnf or /etc/mysql/my.cnf. If you use
+your operating system’s startup scripts, this is typically the only place you’ll specify
+configuration settings. If you start MySQL manually, which you might do when you’re
+running a test installation, you can also specify settings on the command line. The
+server actually reads the contents of the configuration file, removes any comment lines
+and newlines, and then processes it together with the command-line options.
+A note on terminology: because many of MySQL’s command-line options correspond to server variables, we sometimes use the terms option and variable interchangeably. Most variables have the same names
+as their corresponding command-line options, but there are a few exceptions. For example, --memlock sets the locked_in_memory variable.
+Any settings you decide to use permanently should go into the global configuration
+file, instead of being specified at the command line. Otherwise, you risk accidentally
+starting the server without them. It’s also a good idea to keep all of your configuration
+files in a single place so that you can inspect them easily.
+Be sure you know where your server’s configuration file is located! We’ve seen people
+try unsuccessfully to configure a server with a file it doesn’t read, such as /etc/my.cnf
+on Debian servers, which look in /etc/mysql/my.cnf for their configuration. Sometimes
+332 | Chapter 8: Optimizing Server Settingsthere are files in several places, perhaps because a previous system administrator was
+confused as well. If you don’t know which files your server reads, you can ask it:
+$ which mysqld
+/usr/sbin/mysqld
+$ /usr/sbin/mysqld --verbose --help | grep -A 1 'Default options'
+Default options are read from the following file
+In this chapter, we’ll explain a process by which you can create a good configuration
+file for your MySQL server. It is a roundabout trip, with many points of interest and
+side trips to scenic overlooks. These are necessary, because determining the shortest
+path to a good configuration doesn’t start with studying configuration options and
+asking which ones you should set or how you should change them, nor does it start
+with examining server behavior and asking whether any configuration options can improve it. It’s best to begin with an understanding of MySQL’s internals and behavior.
+You can then use that knowledge as a guide for how MySQL should be configured.
+Finally, you can compare the desired configuration to the current configuration and
+correct any differences that are important and worthwhile.
+People often ask, “What’s the optimal configuration file for my server with 32 GB of
+RAM and 12 CPU cores?” Unfortunately, it’s not that simple. The server should be
+configured for the workload, data, and application requirements, not just the hardware.
+MySQL has scores of settings that you can change—but you shouldn’t. It’s usually
+better to configure the basic settings correctly (and there are only a few that really matter
+in most cases) and spend more time on schema optimization, indexes, and query design.
+After you’ve set MySQL’s basic configuration options correctly, the potential gains
+from further changes are usually small.
+On the other hand, the potential downside of fiddling with the configuration can be
+great. We’ve seen more than one “highly tuned” server that was crashing constantly,
+stalling, or performing slowly due to unwise settings. We’ll spend a bit of time on why
+that can happen and what not to do.
+So what should you do? Make sure the basics such as the InnoDB buffer pool and log
+file size are appropriate, set a few safety and sanity options if you wish to prevent bad
+behavior (but note that these usually won’t improve performance—they’ll only avoid
+problems), and then leave the rest of the settings alone. If you begin to experience a
+problem, diagnose it carefully with the techniques shown in Chapter 3. If the problem
+is caused by a part of the server whose behavior can be corrected with a configuration
+option, then you might need to change it.
+331Sometimes you might also need to set specific configuration options that can have a
+significant performance impact in special cases. However, these should not be part of
+a basic server configuration file. You should set them only when you find the specific
+performance problems they address. That’s why we don’t suggest that you approach
+configuration options by looking for bad things to improve. If something needs to be
+improved, it should show up in query response times. It’s best to start your search with
+queries and their response times, not with configuration options. This could save you
+a lot of time and prevent many problems.
+Another good way to save time and trouble is to use the defaults unless you know you
+shouldn’t. There is safety in numbers, and a lot of people are running with default
+settings. That makes them the most thoroughly tested settings. Unexpected bugs can
+arise when you change things needlessly.
+How MySQL’s Configuration Works
+We’ll begin by explaining MySQL’s configuration mechanisms, before covering what
+you should configure in MySQL. MySQL is generally pretty forgiving about its configuration, but following these suggestions might save you a lot of work and time.
+The first thing to know is where MySQL gets configuration information: from
+command-line arguments and settings in its configuration file. On Unix-like systems,
+the configuration file is typically located at /etc/my.cnf or /etc/mysql/my.cnf. If you use
+your operating system’s startup scripts, this is typically the only place you’ll specify
+configuration settings. If you start MySQL manually, which you might do when you’re
+running a test installation, you can also specify settings on the command line. The
+server actually reads the contents of the configuration file, removes any comment lines
+and newlines, and then processes it together with the command-line options.
+A note on terminology: because many of MySQL’s command-line options correspond to server variables, we sometimes use the terms option and variable interchangeably. Most variables have the same names
+as their corresponding command-line options, but there are a few exceptions. For example, --memlock sets the locked_in_memory variable.
+Any settings you decide to use permanently should go into the global configuration
+file, instead of being specified at the command line. Otherwise, you risk accidentally
+starting the server without them. It’s also a good idea to keep all of your configuration
+files in a single place so that you can inspect them easily.
+Be sure you know where your server’s configuration file is located! We’ve seen people
+try unsuccessfully to configure a server with a file it doesn’t read, such as /etc/my.cnf
+on Debian servers, which look in /etc/mysql/my.cnf for their configuration. Sometimes
+332 | Chapter 8: Optimizing Server Settingsthere are files in several places, perhaps because a previous system administrator was
+confused as well. If you don’t know which files your server reads, you can ask it:
+$ which mysqld
+/usr/sbin/mysqld
+$ /usr/sbin/mysqld --verbose --help | grep -A 1 'Default options'
+Default options are read from the following file
+In this chapter, we’ll explain a process by which you can create a good configuration
+file for your MySQL server. It is a roundabout trip, with many points of interest and
+side trips to scenic overlooks. These are necessary, because determining the shortest
+path to a good configuration doesn’t start with studying configuration options and
+asking which ones you should set or how you should change them, nor does it start
+with examining server behavior and asking whether any configuration options can improve it. It’s best to begin with an understanding of MySQL’s internals and behavior.
+You can then use that knowledge as a guide for how MySQL should be configured.
+Finally, you can compare the desired configuration to the current configuration and
+correct any differences that are important and worthwhile.
+People often ask, “What’s the optimal configuration file for my server with 32 GB of
+RAM and 12 CPU cores?” Unfortunately, it’s not that simple. The server should be
+configured for the workload, data, and application requirements, not just the hardware.
+MySQL has scores of settings that you can change—but you shouldn’t. It’s usually
+better to configure the basic settings correctly (and there are only a few that really matter
+in most cases) and spend more time on schema optimization, indexes, and query design.
+After you’ve set MySQL’s basic configuration options correctly, the potential gains
+from further changes are usually small.
+On the other hand, the potential downside of fiddling with the configuration can be
+great. We’ve seen more than one “highly tuned” server that was crashing constantly,
+stalling, or performing slowly due to unwise settings. We’ll spend a bit of time on why
+that can happen and what not to do.
+So what should you do? Make sure the basics such as the InnoDB buffer pool and log
+file size are appropriate, set a few safety and sanity options if you wish to prevent bad
+behavior (but note that these usually won’t improve performance—they’ll only avoid
+problems), and then leave the rest of the settings alone. If you begin to experience a
+problem, diagnose it carefully with the techniques shown in Chapter 3. If the problem
+is caused by a part of the server whose behavior can be corrected with a configuration
+option, then you might need to change it.
+331Sometimes you might also need to set specific configuration options that can have a
+significant performance impact in special cases. However, these should not be part of
+a basic server configuration file. You should set them only when you find the specific
+performance problems they address. That’s why we don’t suggest that you approach
+configuration options by looking for bad things to improve. If something needs to be
+improved, it should show up in query response times. It’s best to start your search with
+queries and their response times, not with configuration options. This could save you
+a lot of time and prevent many problems.
+Another good way to save time and trouble is to use the defaults unless you know you
+shouldn’t. There is safety in numbers, and a lot of people are running with default
+settings. That makes them the most thoroughly tested settings. Unexpected bugs can
+arise when you change things needlessly.
+How MySQL’s Configuration Works
+We’ll begin by explaining MySQL’s configuration mechanisms, before covering what
+you should configure in MySQL. MySQL is generally pretty forgiving about its configuration, but following these suggestions might save you a lot of work and time.
+The first thing to know is where MySQL gets configuration information: from
+command-line arguments and settings in its configuration file. On Unix-like systems,
+the configuration file is typically located at /etc/my.cnf or /etc/mysql/my.cnf. If you use
+your operating system’s startup scripts, this is typically the only place you’ll specify
+configuration settings. If you start MySQL manually, which you might do when you’re
+running a test installation, you can also specify settings on the command line. The
+server actually reads the contents of the configuration file, removes any comment lines
+and newlines, and then processes it together with the command-line options.
+A note on terminology: because many of MySQL’s command-line options correspond to server variables, we sometimes use the terms option and variable interchangeably. Most variables have the same names
+as their corresponding command-line options, but there are a few exceptions. For example, --memlock sets the locked_in_memory variable.
+Any settings you decide to use permanently should go into the global configuration
+file, instead of being specified at the command line. Otherwise, you risk accidentally
+starting the server without them. It’s also a good idea to keep all of your configuration
+files in a single place so that you can inspect them easily.
+Be sure you know where your server’s configuration file is located! We’ve seen people
+try unsuccessfully to configure a server with a file it doesn’t read, such as /etc/my.cnf
+on Debian servers, which look in /etc/mysql/my.cnf for their configuration. Sometimes
+332 | Chapter 8: Optimizing Server Settingsthere are files in several places, perhaps because a previous system administrator was
+confused as well. If you don’t know which files your server reads, you can ask it:
+$ which mysqld
+/usr/sbin/mysqld
+$ /usr/sbin/mysqld --verbose --help | grep -A 1 'Default options'
+Default options are read from the following file
+In this chapter, we’ll explain a process by which you can create a good configuration
+file for your MySQL server. It is a roundabout trip, with many points of interest and
+side trips to scenic overlooks.
