@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Big_Data_Learning.iml" filepath="$PROJECT_DIR$/Big_Data_Learning.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/Exception/Exception.iml" filepath="$PROJECT_DIR$/Java/Advanced/Exception/Exception.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/Generic/Generic.iml" filepath="$PROJECT_DIR$/Java/Advanced/Generic/Generic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/IO/IO.iml" filepath="$PROJECT_DIR$/Java/Advanced/IO/IO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/JDBC/JDBC.iml" filepath="$PROJECT_DIR$/Java/Advanced/JDBC/JDBC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/Map/Map.iml" filepath="$PROJECT_DIR$/Java/Advanced/Map/Map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/Network/Network.iml" filepath="$PROJECT_DIR$/Java/Advanced/Network/Network.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Java/Advanced/Thread/Thread.iml" filepath="$PROJECT_DIR$/Java/Advanced/Thread/Thread.iml" />
+    </modules>
+  </component>
+</project>
