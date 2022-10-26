@@ -83,8 +83,6 @@ public class ReflactDemo1 {
         ClassLoader classLoader = ReflactDemo1.class.getClassLoader();
         Class<?> class4 = classLoader.loadClass("Big_Data_Learning.Java.Advanced.Reflaction.Person");
 
-
-
     }
 
 }
