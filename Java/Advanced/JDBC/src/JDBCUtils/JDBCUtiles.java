@@ -3,10 +3,7 @@ package JDBCUtils;
 
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Properties;
 
 public class JDBCUtiles {
@@ -49,6 +46,34 @@ public class JDBCUtiles {
                 connection.close();
         }catch (SQLException e){
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 关闭资源方法2
+     * @param connection
+     * @param ps
+     * @param resultSet
+     */
+    public static void closeResource(Connection connection, Statement ps, ResultSet resultSet){
+        try {
+            if (ps!=null)
+                ps.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        try {
+            if (connection!=null)
+                connection.close();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        try {
+            if (resultSet!=null){
+                resultSet.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
