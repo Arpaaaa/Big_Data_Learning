@@ -94,6 +94,10 @@ public class ReflactDemo1 {
 
         //如何获取类的私有方法
 
+    }
+    public void ClassObject(){
+        Class c1 = Object.class;
+        Class c2 = String[].class;
 
     }
 
