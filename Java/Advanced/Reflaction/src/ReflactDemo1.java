@@ -44,7 +44,7 @@ public class ReflactDemo1 {
 
         //调用方法
         Method show = clazz.getDeclaredMethod("show");
-        show.invoke(jack);
+        show.invoke(jack);      //invoke 调用方法
 
         //通过反射调用Person类的私有结构
         Constructor<Person> cons1 = clazz.getDeclaredConstructor(String.class);
@@ -60,7 +60,7 @@ public class ReflactDemo1 {
 
         //调用私有方法
         Method method = clazz.getDeclaredMethod("show",String.class);
-        method.setAccessible(true);
+        method.setAccessible(true);            //修改方法的修饰为public
         method.invoke(p1,"show");    //调用Person类的方法
 
     }
