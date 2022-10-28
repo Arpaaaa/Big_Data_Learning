@@ -18,7 +18,7 @@ public class BooksForQuery {
     }
     /*ORM编程思想：object relational mapping
     * 一个数据表对应一个Java类，表中一个记录对应类的一个对象*/
-    class Books{
+    public class Books{
         int id;
         String name;
         String authors;
