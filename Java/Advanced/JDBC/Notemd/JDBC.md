@@ -39,7 +39,6 @@ Connection接口代表Java程序与数据库之间的连接，该接口中的方
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 public class PS {
   public void test() {
     //第一步获取连接
