@@ -7,6 +7,7 @@
 Driver Manager类用于加载JDBC驱动并且创建与数据库的连接。 在Driver Manager类中，定义了两个比较重要的静态方法
 
 `registerDriver(Driver driver)`
+
 `static Connection getConnection(String url,String user,String pwd)  // establishes a connection to the given database and returns a Connection object`
 
 ## Connection 数据库连接
@@ -16,8 +17,11 @@ Driver Manager类用于加载JDBC驱动并且创建与数据库的连接。 在D
 Connection接口代表Java程序与数据库之间的连接，该接口中的方法有
 
 `getMetaData()  //返回数据库中的元数据`
+
 `createStatement() //用来创建一个statement对象将sql语句发送到数据库`
+
 `prepareStatement(String sql)  //创建一个prepareStatement对象将参数化sql语句发送到数据库`
+
 `prepareCall(String sql)  //创建一个CallableStatement对象来调用数据库存储过程`
 
 2. 创建Connection
