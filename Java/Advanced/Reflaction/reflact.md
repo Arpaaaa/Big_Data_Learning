@@ -41,7 +41,15 @@
 
 创建Class类实例
 ```java
-Class clazz = Person.class ;
+public class ClassInstance{
+   Class clazz = Person.class ;
+   
+    public Object getInstance(String className){
+        Class clazz = Class.forName(className);
+        return clazz;
+        }
+    }
+
 ```
 
 #### `java.lang.Class`方法
@@ -89,6 +97,38 @@ public class Instance {
 
 
 ## 获取运行时类的完整结构和指定结构
+
+### 完整结构
+
+完整结构包括 类中全部的属性和方法以及父类的属性和方法
+主要包括两种方法`get**()`和`getDeclared**()`
+
+```java
+class get{
+    public void get(){
+        //属性
+       Field declaredField = personClass.getDeclaredField("name");
+       Field field = personClass.getField("name");
+       //方法
+       Method[] declaredMethods = personClass.getDeclaredMethods();
+       Method method = personClass.getMethod("drink");
+       //修饰符
+       int modifiers = personClass.getModifiers();
+       //构造器
+       Constructor<Person> constructor = personClass.getConstructor();
+       Constructor<Person> declaredConstructor = personClass.getDeclaredConstructor();
+       //注解
+       Annotation annotation = personClass.getAnnotation();
+       Annotation[] declaredAnnotations = personClass.getDeclaredAnnotations();
+       //接口
+       Class<?>[] interfaces = personClass.getInterfaces();
+       Annotation[] declaredAnnotationsByType = personClass.getDeclaredAnnotationsByType();
+
+    }
+}
+```
+
+### 指定结构
 
 
 ## 反射的应用：动态代理

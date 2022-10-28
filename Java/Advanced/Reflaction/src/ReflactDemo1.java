@@ -10,7 +10,7 @@ public class ReflactDemo1 {
         ReflactDemo1 reflactDemo1 = new ReflactDemo1();
 
         try {
-            reflactDemo1.getClassInstance2();
+            reflactDemo1.getClassInstanceField();
         } catch (Exception e) {
             System.out.println("Can't access private part of a class");
         }
@@ -84,7 +84,8 @@ public class ReflactDemo1 {
         Class<?> class4 = classLoader.loadClass("Big_Data_Learning.Java.Advanced.Reflaction.src.Person");
 
     }
-    public void getClassInstance2() throws Exception{
+
+    public void getClassInstanceField() throws Exception{
         Class<Person> p1 = Person.class;
         Field age = p1.getField("age");
         System.out.println(age);
@@ -99,6 +100,21 @@ public class ReflactDemo1 {
         Class c1 = Object.class;
         Class c2 = String[].class;
 
+    }
+
+    /**
+     * 获取className类对象
+     * @param className
+     * @return
+     */
+    public Object getInstance(String className){
+        Class<Object> clazz = null;
+        try {
+            clazz = (Class<Object>) Class.forName(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return clazz;
     }
 
 }
