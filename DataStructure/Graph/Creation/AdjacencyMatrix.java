@@ -38,7 +38,6 @@ public class AdjacencyMatrix {
     }
 
 }
-
 class Vertex{
     public char num;    //节点的序号
     public Vertex(){}
